@@ -8,10 +8,21 @@ services:
     working_dir: /var/www
     volumes:
       - ./app:/var/www
-    ports: 
-      - "8080:8080"
     depends_on:
       - db
+    networks:
+      - rato-net
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./app:/var/www
+      - ./dockerfiles/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
     networks:
       - rato-net
 
