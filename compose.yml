@@ -10,9 +10,30 @@ services:
       - ./app:/var/www
     ports: 
       - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - rato-net
+
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
     networks:
       - rato-net
 
 networks:
   rato-net:
     driver: bridge
+
+volumes:
+  dbdata:
