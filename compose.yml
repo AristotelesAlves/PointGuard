@@ -1,0 +1,18 @@
+services:
+  app:
+    build:
+      context: ./dockerfiles/php-fpm
+      dockerfile: Dockerfile
+    container_name: back_end
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - ./app:/var/www
+    ports: 
+      - "8080:8080"
+    networks:
+      - rato-net
+
+networks:
+  rato-net:
+    driver: bridge
